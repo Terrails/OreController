@@ -32,109 +32,113 @@ public class OreGeneration implements IWorldGenerator {
 
     @SubscribeEvent
     public static void disableVanillaOreGen(OreGenEvent.GenerateMinable event) {
-        for (String ore : ConfigHandler.generationArray) {
-            String oreName = ore.toLowerCase();
-            String nameOfOre = StringHelper.getSubstringBefore(oreName, " -");
+        if (ConfigHandler.generate) {
+            for (String ore : ConfigHandler.generationArray) {
+                String oreName = ore.toLowerCase();
+                String nameOfOre = StringHelper.getSubstringBefore(oreName, " -");
 
-            switch (event.getType()) {
-                case COAL:
-                    if (nameOfOre.contains("minecraft:coal_ore")) {
-                        event.setResult(Event.Result.DENY);
-                    }
-                    break;
-                case DIAMOND:
-                    if (nameOfOre.contains("minecraft:diamond_ore")) {
-                        event.setResult(Event.Result.DENY);
-                    }
-                    break;
-                case GOLD:
-                    if (nameOfOre.contains("minecraft:gold_ore")) {
-                        event.setResult(Event.Result.DENY);
-                    }
-                    break;
-                case IRON:
-                    if (nameOfOre.contains("minecraft:iron_ore")) {
-                        event.setResult(Event.Result.DENY);
-                    }
-                    break;
-                case LAPIS:
-                    if (nameOfOre.contains("minecraft:lapis_ore")) {
-                        event.setResult(Event.Result.DENY);
-                    }
-                    break;
-                case REDSTONE:
-                    if (nameOfOre.contains("minecraft:redstone_ore")) {
-                        event.setResult(Event.Result.DENY);
-                    }
-                    break;
-                case QUARTZ:
-                    if (nameOfOre.contains("minecraft:quartz_ore")) {
-                        event.setResult(Event.Result.DENY);
-                    }
-                    break;
-                case EMERALD:
-                    if (nameOfOre.contains("minecraft:emerald_ore")) {
-                        event.setResult(Event.Result.DENY);
-                    }
-                    break;
-                case DIRT:
-                    if (nameOfOre.contains("minecraft:dirt")) {
-                        event.setResult(Event.Result.DENY);
-                    }
-                    break;
-                case GRAVEL:
-                    if (nameOfOre.contains("minecraft:gravel")) {
-                        event.setResult(Event.Result.DENY);
-                    }
-                    break;
-                case DIORITE:
-                    if (nameOfOre.contains("minecraft:diorite")) {
-                        event.setResult(Event.Result.DENY);
-                    }
-                    break;
-                case GRANITE:
-                    if (nameOfOre.contains("minecraft:granite")) {
-                        event.setResult(Event.Result.DENY);
-                    }
-                    break;
-                case ANDESITE:
-                    if (nameOfOre.contains("minecraft:andesite")) {
-                        event.setResult(Event.Result.DENY);
-                    }
-                    break;
+                switch (event.getType()) {
+                    case COAL:
+                        if (nameOfOre.contains("minecraft:coal_ore")) {
+                            event.setResult(Event.Result.DENY);
+                        }
+                        break;
+                    case DIAMOND:
+                        if (nameOfOre.contains("minecraft:diamond_ore")) {
+                            event.setResult(Event.Result.DENY);
+                        }
+                        break;
+                    case GOLD:
+                        if (nameOfOre.contains("minecraft:gold_ore")) {
+                            event.setResult(Event.Result.DENY);
+                        }
+                        break;
+                    case IRON:
+                        if (nameOfOre.contains("minecraft:iron_ore")) {
+                            event.setResult(Event.Result.DENY);
+                        }
+                        break;
+                    case LAPIS:
+                        if (nameOfOre.contains("minecraft:lapis_ore")) {
+                            event.setResult(Event.Result.DENY);
+                        }
+                        break;
+                    case REDSTONE:
+                        if (nameOfOre.contains("minecraft:redstone_ore")) {
+                            event.setResult(Event.Result.DENY);
+                        }
+                        break;
+                    case QUARTZ:
+                        if (nameOfOre.contains("minecraft:quartz_ore")) {
+                            event.setResult(Event.Result.DENY);
+                        }
+                        break;
+                    case EMERALD:
+                        if (nameOfOre.contains("minecraft:emerald_ore")) {
+                            event.setResult(Event.Result.DENY);
+                        }
+                        break;
+                    case DIRT:
+                        if (nameOfOre.contains("minecraft:dirt")) {
+                            event.setResult(Event.Result.DENY);
+                        }
+                        break;
+                    case GRAVEL:
+                        if (nameOfOre.contains("minecraft:gravel")) {
+                            event.setResult(Event.Result.DENY);
+                        }
+                        break;
+                    case DIORITE:
+                        if (nameOfOre.contains("minecraft:diorite")) {
+                            event.setResult(Event.Result.DENY);
+                        }
+                        break;
+                    case GRANITE:
+                        if (nameOfOre.contains("minecraft:granite")) {
+                            event.setResult(Event.Result.DENY);
+                        }
+                        break;
+                    case ANDESITE:
+                        if (nameOfOre.contains("minecraft:andesite")) {
+                            event.setResult(Event.Result.DENY);
+                        }
+                        break;
+                }
             }
         }
     }
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-        for (String theArray : ConfigHandler.generationArray) {
-            String blockArray = theArray.toLowerCase();
+        if (ConfigHandler.generate) {
+            for (String theArray : ConfigHandler.generationArray) {
+                String blockArray = theArray.toLowerCase();
 
-            boolean containsMinY = blockArray.contains("-miny:");
-            boolean containsMaxY = blockArray.contains("-maxy:");
-            boolean containsMinVein = blockArray.contains("-minvein:");
-            boolean containsMaxVein = blockArray.contains("-maxvein:");
-            boolean containsPerChunk = blockArray.contains("-perchunk:");
-            boolean containsRequired = containsMinY && containsMaxY && containsMinVein && containsMaxVein && containsPerChunk;
+                boolean containsMinY = blockArray.contains("-miny:");
+                boolean containsMaxY = blockArray.contains("-maxy:");
+                boolean containsMinVein = blockArray.contains("-minvein:");
+                boolean containsMaxVein = blockArray.contains("-maxvein:");
+                boolean containsPerChunk = blockArray.contains("-perchunk:");
+                boolean containsRequired = containsMinY && containsMaxY && containsMinVein && containsMaxVein && containsPerChunk;
 
-            int minY = OreGenerationString.getInteger(blockArray, "-miny:");
-            int maxY = OreGenerationString.getInteger(blockArray, "-maxy:");
-            int minVein = OreGenerationString.getInteger(blockArray, "-minvein:");
-            int maxVein = OreGenerationString.getInteger(blockArray, "-maxvein:");
-            int perChunk = OreGenerationString.getInteger(blockArray, "-perchunk:");
-            int biomeID = OreGenerationString.getBiomes(blockArray);
-            int dimensionID = OreGenerationString.getDimensions(blockArray);
-            IBlockState blockOre = OreGenerationString.getOre(blockArray);
-            Block blockReplace = OreGenerationString.getBlock(blockArray);
+                int minY = OreGenerationString.getInteger(blockArray, "-miny:");
+                int maxY = OreGenerationString.getInteger(blockArray, "-maxy:");
+                int minVein = OreGenerationString.getInteger(blockArray, "-minvein:");
+                int maxVein = OreGenerationString.getInteger(blockArray, "-maxvein:");
+                int perChunk = OreGenerationString.getInteger(blockArray, "-perchunk:");
+                int biomeID = OreGenerationString.getBiomes(blockArray);
+                int dimensionID = OreGenerationString.getDimensions(blockArray);
+                IBlockState blockOre = OreGenerationString.getOre(blockArray);
+                Block blockReplace = OreGenerationString.getBlock(blockArray);
 
-            if (blockOre != null && containsRequired) {
-                generateOre(blockOre, blockReplace, world, random, chunkX, chunkZ, minY, maxY, minVein, maxVein, perChunk, biomeID, dimensionID);
-            } else {
-                if (blockOre == null)
-                    Constants.LOGGER.info("Block '" + theArray + "' is invalid");
-                if (!containsRequired)
-                    Constants.LOGGER.info("Config Value doesn't contains required variables: " + theArray);
+                if (blockOre != null && containsRequired) {
+                    generateOre(blockOre, blockReplace, world, random, chunkX, chunkZ, minY, maxY, minVein, maxVein, perChunk, biomeID, dimensionID);
+                } else {
+                    if (blockOre == null)
+                        Constants.LOGGER.info("Block '" + theArray + "' is invalid");
+                    if (!containsRequired)
+                        Constants.LOGGER.info("Config Value doesn't contains required variables: " + theArray);
+                }
             }
         }
     }
