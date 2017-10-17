@@ -1,14 +1,14 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "ore_controller",
+  "name": "Ore Controller",
+  "description": "Make custom ore generation for any block.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["Terrails"],
+  "credits": "Terrails for making the mod!",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
