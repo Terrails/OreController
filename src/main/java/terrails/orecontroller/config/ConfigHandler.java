@@ -2,6 +2,7 @@ package terrails.orecontroller.config;
 
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import terrails.orecontroller.Constants;
@@ -16,7 +17,6 @@ public class ConfigHandler {
 
     public static boolean generate;
     public static String[] generationArray;
-
 
     public static void init(File directory) {
         config = new Configuration(new File(directory, Constants.MOD_ID + ".cfg"));

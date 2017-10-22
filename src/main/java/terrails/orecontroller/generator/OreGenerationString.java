@@ -87,7 +87,9 @@ public class OreGenerationString {
         if (string.contains(index)) {
             String metaDataString = string.replaceAll("^.*(" + index + "\\d+).*$", "$1");
             String metaDataDigit = CharMatcher.digit().retainFrom(metaDataString);
-            return Integer.parseInt(metaDataDigit);
+            if (metaDataDigit.matches(".*\\d.*")) {
+                return Integer.parseInt(metaDataDigit);
+            } else return 0;
         }
         else return 0;
     }
