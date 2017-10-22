@@ -4,7 +4,7 @@ buildscript {
         maven { url = "http://files.minecraftforge.net/maven" }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -15,7 +15,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 version = mod_version
 group = "terrails.orecontroller" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "Ore-Controller"
+archivesBaseName = "Ore-Controller" + "-1.11"
 
 minecraft {
     version = mc_version + "-" + forge_version
@@ -30,7 +30,7 @@ repositories {
     mavenLocal()
 }
 dependencies {
-    compile 'terrails.terracore:TerraCore-1.12:2.1.1'
+    compile 'terrails.terracore:TerraCore-1.11:2.1.1'
 }
 
 processResources {
