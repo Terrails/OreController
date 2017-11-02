@@ -15,7 +15,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 version = mod_version
 group = "terrails.orecontroller" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "Ore-Controller" + "-1.11"
+archivesBaseName = "Ore-Controller" + "-1.10"
 
 minecraft {
     version = mc_version + "-" + forge_version
