@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import terrails.orecontroller.config.ConfigHandler;
+import terrails.orecontroller.event.OreGenerationEvent;
 import terrails.orecontroller.generator.OreGeneration;
 import terrails.orecontroller.proxies.IProxy;
 
@@ -26,8 +27,7 @@ public class OreController {
         proxy.preInit(event);
         ConfigHandler.init(event.getModConfigurationDirectory());
 
-        MinecraftForge.ORE_GEN_BUS.register(new OreGeneration());
-        GameRegistry.registerWorldGenerator(new OreGeneration(), 0);
+        MinecraftForge.ORE_GEN_BUS.register(new OreGenerationEvent());
     }
 
     @Mod.EventHandler
@@ -38,5 +38,6 @@ public class OreController {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
+        GameRegistry.registerWorldGenerator(new OreGeneration(), 0);
     }
 }
