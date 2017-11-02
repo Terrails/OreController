@@ -15,7 +15,6 @@ public class OreGenerationEvent {
             for (String ore : ConfigHandler.generationArray) {
                 String oreName = ore.toLowerCase();
                 String nameOfOre = StringHelper.getSubstringBefore(oreName, " -");
-                System.out.println(nameOfOre);
                 switch (event.getType()) {
                     case COAL:
                         if (nameOfOre.contains("minecraft:coal_ore")) {
