@@ -94,7 +94,14 @@ public class CustomOreGenerator {
                     default: generator = new WorldGenCustomMinable(ore, minVeinSize, maxVeinSize, Blocks.STONE); break;
                 }
             }
-
+            else if (replace == null && biomeID != Integer.MIN_VALUE && dimensionID == Integer.MIN_VALUE) {
+                if (world.getBiome(pos) == Biome.getBiome(biomeID))
+                    switch (world.provider.getDimension()) {
+                        case -1: generator = new WorldGenCustomMinable(ore, minVeinSize, maxVeinSize, Blocks.NETHERRACK); break;
+                        case 1: generator = new WorldGenCustomMinable(ore, minVeinSize, maxVeinSize, Blocks.END_STONE); break;
+                        default: generator = new WorldGenCustomMinable(ore, minVeinSize, maxVeinSize, Blocks.STONE); break;
+                    }
+            }
             if (generator != null)
                 generator.generate(world, random, pos);
         }
