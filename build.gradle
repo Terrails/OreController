@@ -14,7 +14,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 sourceCompatibility = targetCompatibility = '1.8'
 compileJava { sourceCompatibility = targetCompatibility = '1.8' }
 
-version = MC_VERSION + "-" + getModVersion('MOD_VERSION')
+version = getMajorMcVersion() + "-" + getModVersion('MOD_VERSION')
 group = "terrails.orecontroller"
 archivesBaseName = "Ore-Controller"
 
@@ -44,6 +44,23 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+}
+
+String getMajorMcVersion() {
+    String release = "0"
+    String major = "0"
+    File file = file("gradle.properties")
+    file.eachLine { String s ->
+        s = s.trim()
+        if (s.startsWith("MC_VERSION")) {
+            s = s.substring(s.lastIndexOf("=") + 1)
+            String[] pts = s.split("\\.")
+
+            release = pts[0]
+            major = pts[1]
+        }
+    }
+    return "$release.$major"
 }
 
 String getModVersion(String type) {
