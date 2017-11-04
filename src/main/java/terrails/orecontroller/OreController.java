@@ -27,7 +27,6 @@ public class OreController {
         proxy.preInit(event);
         ConfigHandler.init(event.getModConfigurationDirectory());
         MinecraftForge.ORE_GEN_BUS.register(new OreGenerationEvent());
-    //    MinecraftForge.EVENT_BUS.register(new OreGeneration());
     }
 
     @Mod.EventHandler
