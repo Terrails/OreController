@@ -22,10 +22,17 @@ public class OreGenerationString {
 
     public static IBlockState getOre(String string) {
         if (!string.isEmpty()) {
-            int metadata = string.contains("|") ? getInteger(string, "|") : 0;
-            debugMessage("Ore Metadata is: " + metadata);
             String blockString = StringHelper.getSubstringBefore(string, " -").contains("|") ? StringHelper.getSubstringBefore(string, "|") : StringHelper.getSubstringBefore(string, " -");
             debugMessage("Ore String is: " + blockString);
+
+      //      int metadata = StringHelper.getSubstringBefore(string, " -").contains("|") ? getInteger(string, blockString+"|") : 0;
+            String meta1 = StringHelper.getSubstringBefore(string , " -");
+            String meta2 = meta1.contains("|") ? StringHelper.getSubstringAfter(meta1, "|").replace("|", "") : "0";
+            int metadata = Integer.parseInt(meta2);
+            debugMessage("Ore Metadata is: " + metadata);
+
+            System.out.println("Ore is: " + blockString + ", meta is: " + metadata);
+
             Block theBlock = Block.getBlockFromName(blockString);
 
             IBlockState blockState = theBlock != null ? theBlock.getStateFromMeta(metadata) : null;
