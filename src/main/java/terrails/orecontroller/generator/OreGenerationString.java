@@ -30,9 +30,7 @@ public class OreGenerationString {
             String meta2 = meta1.contains("|") ? StringHelper.getSubstringAfter(meta1, "|").replace("|", "") : "0";
             int metadata = Integer.parseInt(meta2);
             debugMessage("Ore Metadata is: " + metadata);
-
-            System.out.println("Ore is: " + blockString + ", meta is: " + metadata);
-
+            
             Block theBlock = Block.getBlockFromName(blockString);
 
             IBlockState blockState = theBlock != null ? theBlock.getStateFromMeta(metadata) : null;
