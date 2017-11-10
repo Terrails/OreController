@@ -63,7 +63,7 @@ public class OreGenerationString {
                 if (!biome2.matches(".*\\d+.*")) {
                     return new String[] {biome2.trim()};
                 } else {
-                    return new String[] {CharMatcher.digit().retainFrom(biome2)};
+                    return new String[] {CharMatcher.DIGIT.retainFrom(biome2)};
                 }
             } else {
                 List<String> biomeName = new ArrayList<>();
