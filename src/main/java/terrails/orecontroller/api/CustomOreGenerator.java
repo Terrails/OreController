@@ -1,5 +1,6 @@
 package terrails.orecontroller.api;
 
+import com.google.common.base.CharMatcher;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -9,6 +10,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import terrails.orecontroller.Constants;
+import terrails.orecontroller.generator.OreGeneration;
 import terrails.orecontroller.generator.OreGenerationString;
 import terrails.terracore.world.generator.WorldGenCustomMinable;
 
@@ -33,13 +35,13 @@ public class CustomOreGenerator {
                 int minVein = OreGenerationString.getInteger(blockArray, "-minvein:");
                 int maxVein = OreGenerationString.getInteger(blockArray, "-maxvein:");
                 int perChunk = OreGenerationString.getInteger(blockArray, "-perchunk:");
-                int[] biomeID = OreGenerationString.getBiomes(blockArray);
                 int[] dimensionID = OreGenerationString.getDimensions(blockArray);
+                String[] biomes = OreGenerationString.getBiomes(blockArray);
                 IBlockState blockOre = OreGenerationString.getOre(blockArray);
                 Block blockReplace = OreGenerationString.getBlock(blockArray);
 
                 if (blockOre != null && containsRequired) {
-                    generator(blockOre, blockReplace, world, random, chunkX, chunkZ, minY, maxY, minVein, maxVein, perChunk, biomeID, dimensionID);
+                    generator(blockOre, blockReplace, world, random, chunkX, chunkZ, minY, maxY, minVein, maxVein, perChunk, biomes, dimensionID);
                 } else {
                     if (blockOre == null)
                         Constants.LOGGER.info("Block '" + OreGenerationString.getOre(blockArray) + "' is invalid");
@@ -50,7 +52,7 @@ public class CustomOreGenerator {
         }
     }
 
-    protected void generator(IBlockState ore, Block replace, World world, Random random, int chunkX, int chunkZ, int minY, int maxY, int minVeinSize, int maxVeinSize, int chancesToSpawn, int[] biomeID, int[] dimensionID) {
+    protected void generator(IBlockState ore, Block replace, World world, Random random, int chunkX, int chunkZ, int minY, int maxY, int minVeinSize, int maxVeinSize, int chancesToSpawn, String[] biomeID, int[] dimensionID) {
         int heightRange = maxY - minY;
         BlockPos pos = new BlockPos((chunkX * 16) + random.nextInt(16), minY + random.nextInt(heightRange), (chunkZ * 16) + random.nextInt(16));
 
@@ -114,11 +116,19 @@ public class CustomOreGenerator {
         }
         return condition;
     }
-    private boolean isBiome(World world, BlockPos pos, int[] biome) {
+    private boolean isBiome(World world, BlockPos pos, String[] biomeNames) {
         boolean condition = false;
-        for (int id : biome) {
-            if (Biome.getBiome(id) == world.getBiome(pos))
-                condition = true;
+        Biome biomeAtPos = world.getBiome(pos);
+        for (String string : biomeNames) {
+            if (string.matches("^[0-9]+$")) {
+                int biomeID = Integer.parseInt(CharMatcher.digit().retainFrom(string));
+                System.out.println("Biome id is: " + biomeID);
+                if (Biome.getBiome(biomeID) == biomeAtPos)
+                    condition = true;
+            } else {
+                if (string.equals(biomeAtPos.getRegistryName().toString()))
+                    condition = true;
+            }
         }
         return condition;
     }

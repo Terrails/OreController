@@ -4,6 +4,8 @@ import com.google.common.base.CharMatcher;
 import com.google.common.primitives.Ints;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.BiomeManager;
 import terrails.orecontroller.Constants;
 import terrails.terracore.helper.StringHelper;
 
@@ -25,7 +27,6 @@ public class OreGenerationString {
             String blockString = StringHelper.getSubstringBefore(string, " -").contains("|") ? StringHelper.getSubstringBefore(string, "|") : StringHelper.getSubstringBefore(string, " -");
             debugMessage("Ore String is: " + blockString);
 
-      //      int metadata = StringHelper.getSubstringBefore(string, " -").contains("|") ? getInteger(string, blockString+"|") : 0;
             String meta1 = StringHelper.getSubstringBefore(string , " -");
             String meta2 = meta1.contains("|") ? StringHelper.getSubstringAfter(meta1, "|").replace("|", "") : "0";
             int metadata = Integer.parseInt(meta2);
@@ -53,28 +54,34 @@ public class OreGenerationString {
         return null;
     }
 
-    public static int[] getBiomes(String string) {
+    public static String[] getBiomes(String string) {
         if (string.contains("-biome:")) {
             String biome1 = StringHelper.getSubstringAfter(string, "-biome:").replace("-biome:", "");
             debugMessage("Biome1 String is: " + biome1);
             String biome2 = biome1.contains(" -") ? StringHelper.getSubstringBefore(biome1, " -") : biome1;
-            debugMessage("Biome2 String is: "+ biome2);
+            debugMessage("Biome2 String is: " + biome2);
+
             if (!biome2.contains("|")) {
-                return new int[] {Integer.parseInt(biome2)};
+                if (!biome2.matches(".*\\d+.*")) {
+                    return new String[] {biome2.trim()};
+                } else {
+                    return new String[] {CharMatcher.digit().retainFrom(biome2)};
+                }
             } else {
-                List<Integer> biomeID = new ArrayList<>();
+                List<String> biomeName = new ArrayList<>();
                 String[] biome3 = biome2.split("\\|");
                 boolean ran = false;
                 for (String biome : biome3) {
-                    biomeID.add(Integer.parseInt(biome));
+                    biomeName.add(biome.trim());
                     ran = true;
                 }
-                if (!ran) biomeID.add(Integer.MIN_VALUE);
-                return Ints.toArray(biomeID);
+                if (!ran) return null;
+                return biomeName.toArray(new String[biomeName.size()]);
             }
         }
-        return new int[]{Integer.MIN_VALUE};
+        return null;
     }
+
     public static int[] getDimensions(String string) {
         if (string.contains("-dimension:")) {
             String dim1 = StringHelper.getSubstringAfter(string, "-dimension:").replace("-dimension:", "");
