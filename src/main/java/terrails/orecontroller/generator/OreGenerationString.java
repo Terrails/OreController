@@ -53,67 +53,32 @@ public class OreGenerationString {
         return null;
     }
 
-    /*
-    public static int getBiomes(String string) {
+    public static String[] getBiomes(String string) {
         if (string.contains("-biome:")) {
             String biome1 = StringHelper.getSubstringAfter(string, "-biome:").replace("-biome:", "");
             debugMessage("Biome1 String is: " + biome1);
             String biome2 = biome1.contains(" -") ? StringHelper.getSubstringBefore(biome1, " -") : biome1;
-            debugMessage("Biome2 String is: "+ biome2);
+            debugMessage("Biome2 String is: " + biome2);
+
             if (!biome2.contains("|")) {
-                return Integer.parseInt(biome2);
-            } else {
-                int biomeID = Integer.MIN_VALUE;
-                String[] biome3 = biome2.split("\\|");
-                for (String biome : biome3) {
-                    biomeID = Integer.parseInt(biome);
+                if (!biome2.matches(".*\\d+.*")) {
+                    return new String[] {biome2.trim()};
+                } else {
+                    return new String[] {CharMatcher.DIGIT.retainFrom(biome2)};
                 }
-                return biomeID;
-            }
-        }
-        return Integer.MIN_VALUE;
-    }
-    public static int getDimensions(String string) {
-        if (string.contains("-dimension:")) {
-            String dim1 = StringHelper.getSubstringAfter(string, "-dimension:").replace("-dimension:", "");
-            debugMessage("Dim1 String is: " + dim1);
-            String dim2 = dim1.contains(" -") ? StringHelper.getSubstringBefore(dim1, " -") : dim1;
-            debugMessage("Dim2 String is: " + dim2);
-            if (!dim2.contains("|")) {
-                return Integer.parseInt(dim2);
             } else {
-                int dimID = Integer.MIN_VALUE;
-                String[] dim3 = dim2.split("\\|");
-                for (String dim : dim3) {
-                    dimID = Integer.parseInt(dim);
-                }
-                return dimID;
-            }
-        }
-        return Integer.MIN_VALUE;
-    }
-    */
-    public static int[] getBiomes(String string) {
-        if (string.contains("-biome:")) {
-            String biome1 = StringHelper.getSubstringAfter(string, "-biome:").replace("-biome:", "");
-            debugMessage("Biome1 String is: " + biome1);
-            String biome2 = biome1.contains(" -") ? StringHelper.getSubstringBefore(biome1, " -") : biome1;
-            debugMessage("Biome2 String is: "+ biome2);
-            if (!biome2.contains("|")) {
-                return new int[] {Integer.parseInt(biome2)};
-            } else {
-                List<Integer> biomeID = new ArrayList<>();
+                List<String> biomeName = new ArrayList<>();
                 String[] biome3 = biome2.split("\\|");
                 boolean ran = false;
                 for (String biome : biome3) {
-                    biomeID.add(Integer.parseInt(biome));
+                    biomeName.add(biome.trim());
                     ran = true;
                 }
-                if (!ran) biomeID.add(Integer.MIN_VALUE);
-                return Ints.toArray(biomeID);
+                if (!ran) return null;
+                return biomeName.toArray(new String[biomeName.size()]);
             }
         }
-        return new int[]{Integer.MIN_VALUE};
+        return null;
     }
     public static int[] getDimensions(String string) {
         if (string.contains("-dimension:")) {
