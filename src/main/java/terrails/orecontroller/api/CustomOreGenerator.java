@@ -122,7 +122,6 @@ public class CustomOreGenerator {
         for (String string : biomeNames) {
             if (string.matches("^[0-9]+$")) {
                 int biomeID = Integer.parseInt(CharMatcher.digit().retainFrom(string));
-                System.out.println("Biome id is: " + biomeID);
                 if (Biome.getBiome(biomeID) == biomeAtPos)
                     condition = true;
             } else {
