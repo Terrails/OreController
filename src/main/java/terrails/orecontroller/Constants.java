@@ -8,7 +8,7 @@ public class Constants {
     public static final String MOD_ID = "ore_controller";
     public static final String MOD_NAME = "Ore Controller";
 
-    public static final String MOD_VERSION = "1.0.4";
+    public static final String MOD_VERSION = "1.0.5";
     public static final String MC_VERSION = "[1.11],[1.11.1],[1.11.2]";
     public static final String TERRACORE_VERSION = "2.1.0";
 

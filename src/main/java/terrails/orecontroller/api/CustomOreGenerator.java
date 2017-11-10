@@ -1,5 +1,6 @@
 package terrails.orecontroller.api;
 
+import com.google.common.base.CharMatcher;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -33,7 +34,7 @@ public class CustomOreGenerator {
                 int minVein = OreGenerationString.getInteger(blockArray, "-minvein:");
                 int maxVein = OreGenerationString.getInteger(blockArray, "-maxvein:");
                 int perChunk = OreGenerationString.getInteger(blockArray, "-perchunk:");
-                int[] biomeID = OreGenerationString.getBiomes(blockArray);
+                String[] biomeID = OreGenerationString.getBiomes(blockArray);
                 int[] dimensionID = OreGenerationString.getDimensions(blockArray);
                 IBlockState blockOre = OreGenerationString.getOre(blockArray);
                 Block blockReplace = OreGenerationString.getBlock(blockArray);
@@ -50,7 +51,7 @@ public class CustomOreGenerator {
         }
     }
 
-    protected void generator(IBlockState ore, Block replace, World world, Random random, int chunkX, int chunkZ, int minY, int maxY, int minVeinSize, int maxVeinSize, int chancesToSpawn, int[] biomeID, int[] dimensionID) {
+    protected void generator(IBlockState ore, Block replace, World world, Random random, int chunkX, int chunkZ, int minY, int maxY, int minVeinSize, int maxVeinSize, int chancesToSpawn, String[] biomeID, int[] dimensionID) {
         int heightRange = maxY - minY;
         BlockPos pos = new BlockPos((chunkX * 16) + random.nextInt(16), minY + random.nextInt(heightRange), (chunkZ * 16) + random.nextInt(16));
 
@@ -115,11 +116,18 @@ public class CustomOreGenerator {
         }
         return condition;
     }
-    private boolean isBiome(World world, BlockPos pos, int[] biome) {
+    private boolean isBiome(World world, BlockPos pos, String[] biomeNames) {
         boolean condition = false;
-        for (int id : biome) {
-            if (Biome.getBiome(id) == world.getBiome(pos))
-                condition = true;
+        Biome biomeAtPos = world.getBiome(pos);
+        for (String string : biomeNames) {
+            if (string.matches("^[0-9]+$")) {
+                int biomeID = Integer.parseInt(CharMatcher.DIGIT.retainFrom(string));
+                if (Biome.getBiome(biomeID) == biomeAtPos)
+                    condition = true;
+            } else {
+                if (string.equals(biomeAtPos.getRegistryName().toString()))
+                    condition = true;
+            }
         }
         return condition;
     }
