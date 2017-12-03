@@ -14,7 +14,7 @@ import terrails.orecontroller.proxies.IProxy;
 
 @Mod(modid = Constants.MOD_ID,
         name = Constants.MOD_NAME,
-        version = Constants.MOD_VERSION,
+        version = Constants.VERSION,
         acceptedMinecraftVersions = Constants.MC_VERSION,
         guiFactory = Constants.GUI_FACTORY,
         dependencies = "required-after:terracore@[" + Constants.TERRACORE_VERSION + ",);")
