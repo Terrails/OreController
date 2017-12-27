@@ -105,12 +105,11 @@ public class OreGenerationString {
         return new int[]{Integer.MIN_VALUE};
     }
 
-    public static int getInteger(String string, String index) {
+    public static double getInteger(String string, String index) {
         if (string.contains(index)) {
-            String metaDataString = string.replaceAll("^.*(" + index + "\\d+).*$", "$1");
-            String metaDataDigit = CharMatcher.digit().retainFrom(metaDataString);
-            if (metaDataDigit.matches(".*\\d.*")) {
-                return Integer.parseInt(metaDataDigit);
+            String metaDataString = string.replaceAll("^.*(" + index + "\\d+\\.?\\d*).*$", "$1").replace(index, "");
+            if (metaDataString.matches(".*\\d.*")) {
+                return Double.parseDouble(metaDataString);
             } else return 0;
         }
         else return 0;

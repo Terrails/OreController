@@ -14,6 +14,8 @@ import terrails.orecontroller.generator.OreGeneration;
 import terrails.orecontroller.generator.OreGenerationString;
 import terrails.terracore.world.generator.WorldGenCustomMinable;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Random;
 
 public class CustomOreGenerator {
@@ -30,11 +32,11 @@ public class CustomOreGenerator {
                 boolean containsPerChunk = blockArray.contains("-perchunk:");
                 boolean containsRequired = containsMinY && containsMaxY && containsMinVein && containsMaxVein && containsPerChunk;
 
-                int minY = OreGenerationString.getInteger(blockArray, "-miny:");
-                int maxY = OreGenerationString.getInteger(blockArray, "-maxy:");
-                int minVein = OreGenerationString.getInteger(blockArray, "-minvein:");
-                int maxVein = OreGenerationString.getInteger(blockArray, "-maxvein:");
-                int perChunk = OreGenerationString.getInteger(blockArray, "-perchunk:");
+                int minY = (int) OreGenerationString.getInteger(blockArray, "-miny:");
+                int maxY = (int) OreGenerationString.getInteger(blockArray, "-maxy:");
+                int minVein = (int) OreGenerationString.getInteger(blockArray, "-minvein:");
+                int maxVein = (int) OreGenerationString.getInteger(blockArray, "-maxvein:");
+                double perChunk = OreGenerationString.getInteger(blockArray, "-perchunk:");
                 int[] dimensionID = OreGenerationString.getDimensions(blockArray);
                 String[] biomes = OreGenerationString.getBiomes(blockArray);
                 IBlockState blockOre = OreGenerationString.getOre(blockArray);
@@ -52,54 +54,69 @@ public class CustomOreGenerator {
         }
     }
 
-    protected void generator(IBlockState ore, Block replace, World world, Random random, int chunkX, int chunkZ, int minY, int maxY, int minVeinSize, int maxVeinSize, int chancesToSpawn, String[] biomeID, int[] dimensionID) {
+    protected void generator(IBlockState ore, Block replace, World world, Random random, int chunkX, int chunkZ, int minY, int maxY, int minVeinSize, int maxVeinSize, double chancesToSpawn, String[] biomeID, int[] dimensionID) {
         int heightRange = maxY - minY;
-        BlockPos pos = new BlockPos((chunkX * 16) + random.nextInt(16), minY + random.nextInt(heightRange), (chunkZ * 16) + random.nextInt(16));
-
-        for (int i = 0; i < chancesToSpawn; i++) {
-            WorldGenCustomMinable generator = null;
-
-            if (isNull(replace) && isNull(biomeID) && isNull(dimensionID)) {
-                generator = generateDefault(world, ore, minVeinSize, maxVeinSize);
+        if (chancesToSpawn % 1 == 0) {
+            for (int i = 0; i < chancesToSpawn; i++) {
+                BlockPos pos = new BlockPos((chunkX * 16) + random.nextInt(16), minY + random.nextInt(heightRange), (chunkZ * 16) + random.nextInt(16));
+                generate(ore, replace, world, random, pos, minVeinSize, maxVeinSize, biomeID, dimensionID);
             }
-
-            else if (isNotNull(replace) && isNull(biomeID) && isNull(dimensionID)) {
-                generator = new WorldGenCustomMinable(ore, minVeinSize, maxVeinSize, replace);
-            }
-            else if (isNull(replace) && isNotNull(biomeID) && isNull(dimensionID)) {
-                if (isBiome(world, pos, biomeID)) {
-                    generator = generateDefault(world, ore, minVeinSize, maxVeinSize);
-                }
-            }
-            else if (isNull(replace) && isNull(biomeID) && isNotNull(dimensionID)) {
-                if (isDimension(world, dimensionID))
-                    generator = generateDefault(world, ore, minVeinSize, maxVeinSize);
-            }
-
-            else if (isNotNull(replace) && isNotNull(biomeID) && isNull(dimensionID)) {
-                if (isBiome(world, pos, biomeID))
-                    generator = new WorldGenCustomMinable(ore, minVeinSize, maxVeinSize, replace);
-            }
-            else if (isNotNull(replace) && isNull(biomeID) && isNotNull(dimensionID)) {
-                if (isDimension(world, dimensionID))
-                    generator = new WorldGenCustomMinable(ore, minVeinSize, maxVeinSize, replace);
-            }
-
-            else if (isNull(replace) && isNotNull(biomeID) && isNotNull(dimensionID)) {
-                if (isBiome(world, pos, biomeID) && isDimension(world, dimensionID))
-                    generator = generateDefault(world, ore, minVeinSize, maxVeinSize);
-            }
-
-            else if (isNotNull(replace) && isNotNull(biomeID) && isNotNull(dimensionID)) {
-                if (isBiome(world, pos, biomeID) && isDimension(world, dimensionID))
-                    generator = new WorldGenCustomMinable(ore, minVeinSize, maxVeinSize, replace);
-            }
-
-            if (generator != null)
-                generator.generate(world, random, pos);
+        } else if (round((0.01 + (1 - 0.01) * random.nextDouble()), 2) <= chancesToSpawn) {
+            BlockPos pos = new BlockPos((chunkX * 16) + random.nextInt(16), minY + random.nextInt(heightRange), (chunkZ * 16) + random.nextInt(16));
+            generate(ore, replace, world, random, pos, minVeinSize, maxVeinSize, biomeID, dimensionID);
         }
     }
 
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
+    protected void generate(IBlockState ore, Block replace, World world, Random random, BlockPos pos, int minVeinSize, int maxVeinSize, String[] biomeID, int[] dimensionID) {
+        WorldGenCustomMinable generator = null;
+
+        if (isNull(replace) && isNull(biomeID) && isNull(dimensionID)) {
+            generator = generateDefault(world, ore, minVeinSize, maxVeinSize);
+        }
+
+        else if (isNotNull(replace) && isNull(biomeID) && isNull(dimensionID)) {
+            generator = new WorldGenCustomMinable(ore, minVeinSize, maxVeinSize, replace);
+        }
+        else if (isNull(replace) && isNotNull(biomeID) && isNull(dimensionID)) {
+            if (isBiome(world, pos, biomeID)) {
+                generator = generateDefault(world, ore, minVeinSize, maxVeinSize);
+            }
+        }
+        else if (isNull(replace) && isNull(biomeID) && isNotNull(dimensionID)) {
+            if (isDimension(world, dimensionID))
+                generator = generateDefault(world, ore, minVeinSize, maxVeinSize);
+        }
+
+        else if (isNotNull(replace) && isNotNull(biomeID) && isNull(dimensionID)) {
+            if (isBiome(world, pos, biomeID))
+                generator = new WorldGenCustomMinable(ore, minVeinSize, maxVeinSize, replace);
+        }
+        else if (isNotNull(replace) && isNull(biomeID) && isNotNull(dimensionID)) {
+            if (isDimension(world, dimensionID))
+                generator = new WorldGenCustomMinable(ore, minVeinSize, maxVeinSize, replace);
+        }
+
+        else if (isNull(replace) && isNotNull(biomeID) && isNotNull(dimensionID)) {
+            if (isBiome(world, pos, biomeID) && isDimension(world, dimensionID))
+                generator = generateDefault(world, ore, minVeinSize, maxVeinSize);
+        }
+
+        else if (isNotNull(replace) && isNotNull(biomeID) && isNotNull(dimensionID)) {
+            if (isBiome(world, pos, biomeID) && isDimension(world, dimensionID))
+                generator = new WorldGenCustomMinable(ore, minVeinSize, maxVeinSize, replace);
+        }
+
+        if (generator != null)
+            generator.generate(world, random, pos);
+    }
     private WorldGenCustomMinable generateDefault(World world, IBlockState ore, int minVeinSize, int maxVeinSize) {
         switch (world.provider.getDimension()) {
             case -1: return new WorldGenCustomMinable(ore, minVeinSize, maxVeinSize, Blocks.NETHERRACK);
