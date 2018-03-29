@@ -3,15 +3,10 @@ package terrails.orecontroller.generator;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
-import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.fml.common.IWorldGenerator;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.Event;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import terrails.orecontroller.Constants;
 import terrails.orecontroller.api.CustomOreGenerator;
 import terrails.orecontroller.config.ConfigHandler;
-import terrails.terracore.helper.StringHelper;
 
 import java.util.Random;
 

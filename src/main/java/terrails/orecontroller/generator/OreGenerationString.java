@@ -4,10 +4,8 @@ import com.google.common.base.CharMatcher;
 import com.google.common.primitives.Ints;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.world.biome.Biome;
-import net.minecraftforge.common.BiomeManager;
+import org.apache.commons.lang3.StringUtils;
 import terrails.orecontroller.Constants;
-import terrails.terracore.helper.StringHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +22,11 @@ public class OreGenerationString {
 
     public static IBlockState getOre(String string) {
         if (!string.isEmpty()) {
-            String blockString = StringHelper.getSubstringBefore(string, " -").contains("|") ? StringHelper.getSubstringBefore(string, "|") : StringHelper.getSubstringBefore(string, " -");
+            String blockString = StringUtils.substringBefore(string, " -").contains("|") ? StringUtils.substringBefore(string, "|") : StringUtils.substringBefore(string, " -");
             debugMessage("Ore String is: " + blockString);
 
-            String meta1 = StringHelper.getSubstringBefore(string , " -");
-            String meta2 = meta1.contains("|") ? StringHelper.getSubstringAfter(meta1, "|").replace("|", "") : "0";
+            String meta1 = StringUtils.substringBefore(string , " -");
+            String meta2 = meta1.contains("|") ? StringUtils.substringAfter(meta1, "|").replace("|", "") : "0";
             int metadata = Integer.parseInt(meta2);
             debugMessage("Ore Metadata is: " + metadata);
             
@@ -42,7 +40,7 @@ public class OreGenerationString {
     }
     public static Block getBlock(String string) {
         if (string.contains("-replace:")) {
-            String replace1 = StringHelper.getSubstringAfter(string, "-replace:").replace("-replace:", "");
+            String replace1 = StringUtils.substringAfter(string, "-replace:").replace("-replace:", "");
             debugMessage("Block Replace1 is: " + replace1);
             String replace2 = replace1.contains(" -") ? replace1.replaceAll("([\\s]).*", "$1").replace(" ", "") : replace1;
             debugMessage("Block String is: " + replace2);
@@ -56,9 +54,9 @@ public class OreGenerationString {
 
     public static String[] getBiomes(String string) {
         if (string.contains("-biome:")) {
-            String biome1 = StringHelper.getSubstringAfter(string, "-biome:").replace("-biome:", "");
+            String biome1 = StringUtils.substringAfter(string, "-biome:").replace("-biome:", "");
             debugMessage("Biome1 String is: " + biome1);
-            String biome2 = biome1.contains(" -") ? StringHelper.getSubstringBefore(biome1, " -") : biome1;
+            String biome2 = biome1.contains(" -") ? StringUtils.substringBefore(biome1, " -") : biome1;
             debugMessage("Biome2 String is: " + biome2);
 
             if (!biome2.contains("|")) {
@@ -84,9 +82,9 @@ public class OreGenerationString {
 
     public static int[] getDimensions(String string) {
         if (string.contains("-dimension:")) {
-            String dim1 = StringHelper.getSubstringAfter(string, "-dimension:").replace("-dimension:", "");
+            String dim1 = StringUtils.substringAfter(string, "-dimension:").replace("-dimension:", "");
             debugMessage("Dim1 String is: " + dim1);
-            String dim2 = dim1.contains(" -") ? StringHelper.getSubstringBefore(dim1, " -") : dim1;
+            String dim2 = dim1.contains(" -") ? StringUtils.substringBefore(dim1, " -") : dim1;
             debugMessage("Dim2 String is: " + dim2);
             if (!dim2.contains("|")) {
                 return new int[] {Integer.parseInt(dim2)};

@@ -1,11 +1,10 @@
 package terrails.orecontroller.event;
 
 import net.minecraftforge.event.terraingen.OreGenEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.apache.commons.lang3.StringUtils;
 import terrails.orecontroller.config.ConfigHandler;
-import terrails.terracore.helper.StringHelper;
 
 public class OreGenerationEvent {
 
@@ -14,7 +13,7 @@ public class OreGenerationEvent {
         if (ConfigHandler.generate) {
             for (String ore : ConfigHandler.generationArray) {
                 String oreName = ore.toLowerCase();
-                String nameOfOre = StringHelper.getSubstringBefore(oreName, " -");
+                String nameOfOre = StringUtils.substringBefore(oreName, " -");
                 switch (event.getType()) {
                     case COAL:
                         if (nameOfOre.contains("minecraft:coal_ore")) {

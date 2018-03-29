@@ -10,7 +10,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import terrails.orecontroller.Constants;
-import terrails.orecontroller.generator.OreGeneration;
 import terrails.orecontroller.generator.OreGenerationString;
 import terrails.terracore.world.generator.WorldGenCustomMinable;
 
@@ -48,7 +47,7 @@ public class CustomOreGenerator {
                     if (blockOre == null)
                         Constants.LOGGER.info("Block '" + OreGenerationString.getOre(blockArray) + "' is invalid");
                     if (!containsRequired)
-                        Constants.LOGGER.info("Config Value doesn't contain required variables: " + theArray);
+                        Constants.LOGGER.info("config Value doesn't contain required variables: " + theArray);
                 }
             }
         }
