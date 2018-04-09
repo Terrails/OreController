@@ -6,6 +6,7 @@ import net.minecraftforge.fml.client.config.DummyConfigElement;
 import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraftforge.fml.client.config.IConfigElement;
 import terrails.orecontroller.Constants;
+import terrails.orecontroller.OreController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 public class GUIConfig extends GuiConfig {
 
     public GUIConfig(GuiScreen parentScreen) {
-        super(parentScreen, GUIConfig.getConfigElements(), Constants.MOD_ID, false, false, "/" + Constants.MOD_ID + ".cfg");
+        super(parentScreen, GUIConfig.getConfigElements(), OreController.MOD_ID, false, false, "/" + OreController.MOD_ID + ".cfg");
     }
 
     private static List<IConfigElement> getConfigElements() {

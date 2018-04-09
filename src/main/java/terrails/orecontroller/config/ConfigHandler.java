@@ -5,6 +5,7 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import terrails.orecontroller.Constants;
+import terrails.orecontroller.OreController;
 
 import java.io.File;
 
@@ -18,13 +19,13 @@ public class ConfigHandler {
     public static String[] generationArray;
 
     public static void init(File directory) {
-        config = new Configuration(new File(directory, Constants.MOD_ID + ".cfg"));
+        config = new Configuration(new File(directory, OreController.MOD_ID + ".cfg"));
         syncConfig();
     }
 
     @SubscribeEvent
     public static void configChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-        if (event.getModID().equals(Constants.MOD_ID)) {
+        if (event.getModID().equals(OreController.MOD_ID)) {
             syncConfig();
         }
     }
