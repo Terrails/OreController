@@ -49,6 +49,7 @@ public class OreController extends MainModClass<OreController> {
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
+        OreGeneration.init();
         GameRegistry.registerWorldGenerator(new OreGeneration(), 0);
     }
 

@@ -6,6 +6,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import terrails.orecontroller.Constants;
 import terrails.orecontroller.OreController;
+import terrails.orecontroller.generator.OreGeneration;
 
 import java.io.File;
 
@@ -27,6 +28,7 @@ public class ConfigHandler {
     public static void configChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
         if (event.getModID().equals(OreController.MOD_ID)) {
             syncConfig();
+            OreGeneration.init();
         }
     }
 

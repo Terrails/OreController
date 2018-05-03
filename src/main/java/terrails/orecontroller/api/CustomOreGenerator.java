@@ -45,7 +45,7 @@ public class CustomOreGenerator {
                     generator(blockOre, blockReplace, world, random, chunkX, chunkZ, minY, maxY, minVein, maxVein, perChunk, biomes, dimensionID);
                 } else {
                     if (blockOre == null)
-                        Constants.LOGGER.info("Block '" + OreGenerationString.getOre(blockArray) + "' is invalid");
+                        Constants.LOGGER.info("Block '" + blockArray + "' is invalid");
                     if (!containsRequired)
                         Constants.LOGGER.info("config Value doesn't contain required variables: " + theArray);
                 }

@@ -1,13 +1,17 @@
 package terrails.orecontroller.generator;
 
 import com.google.common.base.CharMatcher;
+import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.BiomeDictionary;
 import org.apache.commons.lang3.StringUtils;
 import terrails.orecontroller.Constants;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
@@ -101,6 +105,27 @@ public class OreGenerationString {
             }
         }
         return new int[]{Integer.MIN_VALUE};
+    }
+
+    public static BiomeDictionary.Type[] getBiomeTypes(String string) {
+        if (string.contains("-biometype:")) {
+            String type1 = StringUtils.substringAfter(string, "-biometype:").replace("-biometype:", "");
+            debugMessage("Type1 String is: " + type1);
+            String type2 = type1.contains(" -") ? StringUtils.substringBefore(type1, " -") : type1;
+            debugMessage("Type2 String is: " + type2);
+            if (!type2.contains("|")) {
+                return new BiomeDictionary.Type[] {BiomeDictionary.Type.getType(type2.toUpperCase())};
+            } else {
+                List<BiomeDictionary.Type> types = Lists.newArrayList();
+                String[] type3 = type2.split("\\|");
+                boolean ran = false;
+                for (String type : type3) {
+                    types.add(BiomeDictionary.Type.getType(type.toUpperCase()));
+                }
+                return types.toArray(new BiomeDictionary.Type[0]);
+            }
+        }
+        return null;
     }
 
     public static double getInteger(String string, String index) {
