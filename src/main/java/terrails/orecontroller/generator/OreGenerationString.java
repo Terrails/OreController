@@ -5,6 +5,8 @@ import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +15,7 @@ import terrails.orecontroller.Constants;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("deprecation")
 public class OreGenerationString {
@@ -42,16 +45,22 @@ public class OreGenerationString {
         }
         return null;
     }
-    public static Block getBlock(String string) {
+    public static Tuple<Block, Integer> getBlock(String string) {
         if (string.contains("-replace:")) {
             String replace1 = StringUtils.substringAfter(string, "-replace:").replace("-replace:", "");
             debugMessage("Block Replace1 is: " + replace1);
             String replace2 = replace1.contains(" -") ? replace1.replaceAll("([\\s]).*", "$1").replace(" ", "") : replace1;
+            debugMessage("Block Replace2 is: " + replace2);
+            String replace3 = replace2.contains("|") ? StringUtils.substringBefore(replace2, "|").replace("|", "") : replace2;
             debugMessage("Block String is: " + replace2);
 
-            Block theBlock = Block.getBlockFromName(replace2);
+            String meta2 = replace2.contains("|") ? StringUtils.substringAfter(replace2, "|").replace("|", "") : "-1";
+            int metadata = Integer.parseInt(meta2);
+            debugMessage("Block Metadata is: " + metadata);
+
+            Block theBlock = Block.getBlockFromName(replace3);
             debugMessage("Block is: " + theBlock);
-            return theBlock;
+            return new Tuple<>(theBlock == null ? Blocks.AIR : theBlock, metadata);
         }
         return null;
     }

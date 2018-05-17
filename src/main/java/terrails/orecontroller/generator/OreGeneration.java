@@ -9,9 +9,7 @@ import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import org.apache.commons.lang3.StringUtils;
 import terrails.orecontroller.Constants;
-import terrails.orecontroller.api.CustomOreGenerator;
 import terrails.orecontroller.config.ConfigHandler;
 
 import java.util.*;
