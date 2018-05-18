@@ -60,7 +60,8 @@ public class OreGenerationString {
 
             Block theBlock = Block.getBlockFromName(replace3);
             debugMessage("Block is: " + theBlock);
-            return new Tuple<>(theBlock == null ? Blocks.AIR : theBlock, metadata);
+            return new Tuple<>(theBlock, metadata);
+          //  return new Tuple<>(theBlock == null ? Blocks.AIR : theBlock, metadata);
         }
         return null;
     }

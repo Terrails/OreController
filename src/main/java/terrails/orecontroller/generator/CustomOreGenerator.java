@@ -42,7 +42,7 @@ public class CustomOreGenerator {
                 Tuple<Block, Integer> blockReplace = OreGenerationString.getBlock(blockArray);
 
                 if (blockOre != null && containsRequired) {
-                    Block block = blockReplace != null ? blockReplace.getFirst() : null;
+                    Block block = blockReplace != null ? blockReplace.getFirst() : null;// : null;
                     Integer integer = blockReplace != null ? blockReplace.getSecond() : -1;
                     generator(blockOre, block, integer, world, random, chunkX, chunkZ, minY, maxY, minVein, maxVein, perChunk, biomes, dimensionID);
                 } else {
@@ -79,38 +79,38 @@ public class CustomOreGenerator {
     protected void generate(IBlockState ore, Block replace, int replaceMeta, World world, Random random, BlockPos pos, int minVeinSize, int maxVeinSize, String[] biomeID, int[] dimensionID) {
         WorldGenCustomMinable generator = null;
 
-        if (replace == null && isNull(biomeID) && isNull(dimensionID)) {
+        if (isNull(replace) && isNull(biomeID) && isNull(dimensionID)) {
             generator = generateDefault(world, ore, minVeinSize, maxVeinSize);
         }
 
-        else if (replace != null && isNull(biomeID) && isNull(dimensionID)) {
+        else if (isNotNull(replace) && isNull(biomeID) && isNull(dimensionID)) {
             generator = new WorldGenCustomMinable(ore, minVeinSize, maxVeinSize, replace, replaceMeta);
         }
-        else if (replace == null && isNotNull(biomeID) && isNull(dimensionID)) {
+        else if (isNull(replace) && isNotNull(biomeID) && isNull(dimensionID)) {
             if (isBiome(world, pos, biomeID)) {
                 generator = generateDefault(world, ore, minVeinSize, maxVeinSize);
             }
         }
-        else if (replace == null && isNull(biomeID) && isNotNull(dimensionID)) {
+        else if (isNull(replace) && isNull(biomeID) && isNotNull(dimensionID)) {
             if (isDimension(world, dimensionID))
                 generator = generateDefault(world, ore, minVeinSize, maxVeinSize);
         }
 
-        else if (replace != null && isNotNull(biomeID) && isNull(dimensionID)) {
+        else if (isNotNull(replace) && isNotNull(biomeID) && isNull(dimensionID)) {
             if (isBiome(world, pos, biomeID))
                 generator = new WorldGenCustomMinable(ore, minVeinSize, maxVeinSize, replace, replaceMeta);
         }
-        else if (replace != null && isNull(biomeID) && isNotNull(dimensionID)) {
+        else if (isNotNull(replace) && isNull(biomeID) && isNotNull(dimensionID)) {
             if (isDimension(world, dimensionID))
                 generator = new WorldGenCustomMinable(ore, minVeinSize, maxVeinSize, replace, replaceMeta);
         }
 
-        else if (replace == null && isNotNull(biomeID) && isNotNull(dimensionID)) {
+        else if (isNull(replace) && isNotNull(biomeID) && isNotNull(dimensionID)) {
             if (isBiome(world, pos, biomeID) && isDimension(world, dimensionID))
                 generator = generateDefault(world, ore, minVeinSize, maxVeinSize);
         }
 
-        else if (replace != null && isNotNull(biomeID) && isNotNull(dimensionID)) {
+        else if (isNotNull(replace) && isNotNull(biomeID) && isNotNull(dimensionID)) {
             if (isBiome(world, pos, biomeID) && isDimension(world, dimensionID))
                 generator = new WorldGenCustomMinable(ore, minVeinSize, maxVeinSize, replace, replaceMeta);
         }

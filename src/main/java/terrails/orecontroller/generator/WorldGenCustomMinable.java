@@ -49,13 +49,11 @@ public class WorldGenCustomMinable extends WorldGenerator {
         int newX = x + 8;
         int newZ = z + 8;
         IBlockState blockState = world.getBlockState(new BlockPos(newX, y, newZ));
-        if (predicate.apply(blockState)) {
-        // if (blockState.getBlock().isReplaceableOreGen(blockState, world, new BlockPos(x, y, z), predicate)) {
+        if (blockState.getBlock().isReplaceableOreGen(blockState, world, new BlockPos(x, y, z), predicate)) {
             for (int i = 0; i < veinSize; i++) {
-                int posX = newX + random.nextInt(2) + 8;
-                int posY = y + random.nextInt(2) + 8;
-                int posZ = newZ + random.nextInt(2) + 8;
-                world.setBlockState(new BlockPos(posX, posY, posZ), oreToGenerate, 2);
+                int posX = newX + random.nextInt(2);
+                int posZ = newZ + random.nextInt(2);
+                world.setBlockState(new BlockPos(posX, y, posZ), oreToGenerate, 2);
                 value = true;
             }
         }
